@@ -1,26 +1,42 @@
 import React from 'react'
 import TodoInp from './component/TodoInp.js'
 import TodoItem from './component/TodoItem.js'
+import * as localStore from './localStore.js'
 import './App.css'
 export default class App extends React.Component{
 	constructor(){
 		super();
 		this.state={
-			todoLis:[],
-			newTodo: ''
+			todoLis:localStore.load('todoLis') || [],
+			newTodo: '',
+			condition:'all'
 		}
+	}
+	componentDidUpdate(){
+		localStore.save('todoLis',this.state.todoLis)
 	}
 	render(){
 		return (
 			<div className='app'>
-				<h3 className='title'>To Do List</h3>
+				<div className="title-wrap">
+					<div className="title">
+						<h3>Manage Your plane</h3>
+						<ul className='tab'>
+							<li className={this.state.condition==='all'? 'active':''} onClick={this.changeStatus.bind(this,'all')}>全部</li>
+							<li className={this.state.condition==='finished'? 'active':''} onClick={this.changeStatus.bind(this,'finished')}>已完成</li>
+							<li className={this.state.condition==='unfinished'? 'active':''} onClick={this.changeStatus.bind(this,'unfinished')}>未完成</li>
+						</ul>
+					</div>
+				</div>
 				<TodoInp content={this.state.newTodo} 
 				onSubmit = {this.addTodo.bind(this)}
 				onChange={this.changeTitle.bind(this)}
 				/>
 				<ul  className='center todo-list'>
 					{this.state.todoLis.filter(item=>{
-						return !item.isDeleted
+						if(this.state.condition==='finished') return !item.isDeleted&&item.isFinished;
+						if(this.state.condition==='unfinished') return !item.isDeleted&&!item.isFinished;
+						return !item.isDeleted;
 					}).map((item,index)=>{
 						return <TodoItem onDelete={this.willDeleted} onToggle={this.changeCheckbox} key={index} todo={item}/>
 					})}
@@ -42,10 +58,11 @@ export default class App extends React.Component{
 			isFinished:false,
 			isDeleted:false
 		});
-		this.setState({
+		Object.assign(this.state,{
      	  	newTodo: '',
 			todoList: this.state.todoList
      	})
+		this.setState(this.state)
 	}
 	changeCheckbox=(e,todo)=>{
 		todo.isFinished=e.target.checked;
@@ -54,5 +71,11 @@ export default class App extends React.Component{
 	willDeleted=(e,todo)=>{
 		todo.isDeleted = true;
 		this.setState(this.state)
+	}
+	changeStatus = (key)=>{
+		this.setState(Object.assign(this.state,{
+			condition:key
+		}))
+		console.log(this.state)
 	}
 }
