@@ -54,9 +54,11 @@ body {
 .tab li {
 	padding: 0 40px;
 }
-.tab li.active{
-	background-color:#2070ab;
+
+.tab li.active {
+	background-color: #2070ab;
 }
+
 .tab li:hover {
 	background: #2070ab;
 	cursor: pointer;
@@ -79,6 +81,33 @@ body {
 	padding: 0 10px;
 	border-radius: 10px;
 	margin-top: 15px;
+}
+
+.todo-list li.fade-out {
+	-webkit-animation: fadeOutLeft 1s .2s ease both;
+	-moz-animation: fadeOutLeft 1s .2s ease both;
+}
+
+@-webkit-keyframes fadeOutLeft {
+	0% {
+		opacity: 1;
+		-webkit-transform: translateX(0)
+	}
+	100% {
+		opacity: 0;
+		-webkit-transform: translateX(-20px)
+	}
+}
+
+@-moz-keyframes fadeOutLeft {
+	0% {
+		opacity: 1;
+		-moz-transform: translateX(0)
+	}
+	100% {
+		opacity: 0;
+		-moz-transform: translateX(-20px)
+	}
 }
 
 .todo-list li:nth-child(odd) {
@@ -105,7 +134,6 @@ body {
 	color: #aaa;
 	text-decoration: line-through;
 }
-
 
 @-webkit-keyframes fadeOutLeft {
 	0% {

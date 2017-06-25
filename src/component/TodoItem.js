@@ -2,7 +2,7 @@ import React from 'react'
 export default class TodoItem extends React.Component{
 	render(){
 		return (
-			<li>
+			<li className={this.props.todo.isDeleted?'fade-out':''}>
 				<input type='checkbox' 
 				onChange={this.changeCheckbox.bind(this)} 
 				className='is-check'

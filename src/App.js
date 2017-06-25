@@ -3,6 +3,7 @@ import TodoInp from './component/TodoInp.js'
 import TodoItem from './component/TodoItem.js'
 import * as localStore from './localStore.js'
 import './App.css'
+import TodoTab from './component/TodoTab.js'
 export default class App extends React.Component{
 	constructor(){
 		super();
@@ -21,11 +22,10 @@ export default class App extends React.Component{
 				<div className="title-wrap">
 					<div className="title">
 						<h3>Manage Your plane</h3>
-						<ul className='tab'>
-							<li className={this.state.condition==='all'? 'active':''} onClick={this.changeStatus.bind(this,'all')}>全部</li>
-							<li className={this.state.condition==='finished'? 'active':''} onClick={this.changeStatus.bind(this,'finished')}>已完成</li>
-							<li className={this.state.condition==='unfinished'? 'active':''} onClick={this.changeStatus.bind(this,'unfinished')}>未完成</li>
-						</ul>
+						<TodoTab 
+						 condition={this.state.condition}
+						 onChangeStatus={this.changeStatus.bind(this)}
+						/>
 					</div>
 				</div>
 				<TodoInp content={this.state.newTodo} 
@@ -38,7 +38,12 @@ export default class App extends React.Component{
 						if(this.state.condition==='unfinished') return !item.isDeleted&&!item.isFinished;
 						return !item.isDeleted;
 					}).map((item,index)=>{
-						return <TodoItem onDelete={this.willDeleted} onToggle={this.changeCheckbox} key={index} todo={item}/>
+						return <TodoItem 
+									onDelete={this.willDeleted} 
+									onToggle={this.changeCheckbox} 
+									key={index} 
+									todo={item}
+								/>
 					})}
 				</ul>
 			</div>	
@@ -76,6 +81,12 @@ export default class App extends React.Component{
 		this.setState(Object.assign(this.state,{
 			condition:key
 		}))
-		console.log(this.state)
 	}
 }
+/*
+	<ul className='tab'>
+							<li className={this.state.condition==='all'? 'active':''} onClick={this.changeStatus.bind(this,'all')}>全部</li>
+							<li className={this.state.condition==='finished'? 'active':''} onClick={this.changeStatus.bind(this,'finished')}>已完成</li>
+							<li className={this.state.condition==='unfinished'? 'active':''} onClick={this.changeStatus.bind(this,'unfinished')}>未完成</li>
+						</ul>
+*/
