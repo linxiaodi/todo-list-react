@@ -4,7 +4,8 @@ export default class TodoItem extends React.Component{
 		return (
 			<li className={this.props.todo.isDeleted?'fade-out':''}>
 				<input type='checkbox' 
-				onChange={this.changeCheckbox.bind(this)} 
+				onChange={this.changeCheckbox.bind(this)}
+				checked={this.props.todo.isFinished? true : false} 
 				className='is-check'
 				/> 
 				<span className={this.props.todo.isFinished ? 'completed' : ''} 
